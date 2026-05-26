@@ -13,171 +13,60 @@ Script Purpose:
 
 ====================================================================
 */
-CREATE OR REPLACE PROCEDURE bronze.load_bronze()
-LANGUAGE plpgsql
-AS $$
+DROP TABLE IF EXISTS bronze.crm_cust_info;
 
-DECLARE --declaration of variables
-    start_time TIMESTAMP;
-    end_time   TIMESTAMP;
-	start_time_batch TIMESTAMP;
-	end_time_batch TIMESTAMP;
+CREATE TABLE bronze.crm_cust_info( --DDL
+cst_id INT,
+cst_key VARCHAR(50),
+cst_firstname VARCHAR(50),
+cst_lastname VARCHAR(50),
+cst_material_status VARCHAR(50),
+cst_gndr VARCHAR(50),
+cst_create_date DATE
+);
+             -
+DROP TABLE IF EXISTS bronze.crm_prd_info;
+CREATE TABLE bronze.crm_prd_info (
+    prd_id       INT,
+    prd_key      VARCHAR(50),
+    prd_nm       VARCHAR(50),
+    prd_cost     INT,
+    prd_line     VARCHAR(50),
+    prd_start_dt TIMESTAMP,
+    prd_end_dt   TIMESTAMP
+);
 
-BEGIN --try block
-    start_time_batch :=CURRENT_TIMESTAMP;
-    RAISE NOTICE '=========================================';
-    RAISE NOTICE 'LOADING BRONZE LAYER';
-    RAISE NOTICE '=========================================';
+DROP TABLE IF EXISTS bronze.crm_sales_details;
+CREATE TABLE bronze.crm_sales_details (
+    sls_ord_num  VARCHAR(50),
+    sls_prd_key  VARCHAR(50),
+    sls_cust_id  INT,
+    sls_order_dt INT,
+    sls_ship_dt  INT,
+    sls_due_dt   INT,
+    sls_sales    INT,
+    sls_quantity INT,
+    sls_price    INT
+);
+DROP TABLE IF EXISTS bronze.erp_loc_a101;
+CREATE TABLE bronze.erp_loc_a101 (
+    cid   VARCHAR(50),
+    cntry VARCHAR(50)
+);
 
-    ----------------------------------------------------------------
-    -- CSV TABLE 1
-    ----------------------------------------------------------------
+DROP TABLE IF EXISTS bronze.erp_cust_az12;
+CREATE TABLE bronze.erp_cust_az12 (
+    cid   VARCHAR(50),
+    bdate DATE,
+    gen   VARCHAR(50)
+);
+DROP TABLE IF EXISTS bronze.erp_px_cat_g1v2;
+CREATE TABLE bronze.erp_px_cat_g1v2 (
+    id          VARCHAR(50),
+    cat         VARCHAR(50),
+    subcat      VARCHAR(50),
+    maintenance VARCHAR(50)
+);
 
-    RAISE NOTICE 'LOADING CRM TABLES';
 
-    start_time := CURRENT_TIMESTAMP;
 
-    RAISE NOTICE 'TRUNCATE crm_cust_info';
-
-    TRUNCATE TABLE bronze.crm_cust_info;
-
-    RAISE NOTICE 'INSERTING crm_cust_info';
-
-    COPY bronze.crm_cust_info
-    FROM 'D:/sql/sql-data-warehouse-project/datasets/source_crm/cust_info.csv'
-    DELIMITER ','
-    CSV HEADER;
-
-    end_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time - start_time));
-
-    ----------------------------------------------------------------
-    -- CSV TABLE 2
-    ----------------------------------------------------------------
-
-    start_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE 'TRUNCATE crm_prd_info';
-
-    TRUNCATE TABLE bronze.crm_prd_info;
-
-    RAISE NOTICE 'INSERTING crm_prd_info';
-
-    COPY bronze.crm_prd_info
-    FROM 'D:/sql/sql-data-warehouse-project/datasets/source_crm/prd_info.csv'
-    DELIMITER ','
-    CSV HEADER;
-
-    end_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time - start_time));
-
-    ----------------------------------------------------------------
-    -- CSV TABLE 3
-    ----------------------------------------------------------------
-
-    start_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE 'TRUNCATE crm_sales_details';
-
-    TRUNCATE TABLE bronze.crm_sales_details;
-
-    RAISE NOTICE 'INSERTING crm_sales_details';
-
-    COPY bronze.crm_sales_details
-    FROM 'D:/sql/sql-data-warehouse-project/datasets/source_crm/sales_details.csv'
-    DELIMITER ','
-    CSV HEADER;
-
-    end_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time - start_time));
-
-    ----------------------------------------------------------------
-    -- ERP TABLE 1
-    ----------------------------------------------------------------
-
-    start_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE 'TRUNCATE erp_cust_az12';
-
-    TRUNCATE TABLE bronze.erp_cust_az12;
-
-    RAISE NOTICE 'INSERTING erp_cust_az12';
-
-    COPY bronze.erp_cust_az12
-    FROM 'D:/sql/sql-data-warehouse-project/datasets/source_erp/cust_az12.csv'
-    DELIMITER ','
-    CSV HEADER;
-
-    end_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time - start_time));
-
-    ----------------------------------------------------------------
-    -- ERP TABLE 2
-    ----------------------------------------------------------------
-
-    start_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE 'TRUNCATE erp_loc_a101';
-
-    TRUNCATE TABLE bronze.erp_loc_a101;
-
-    RAISE NOTICE 'INSERTING erp_loc_a101';
-
-    COPY bronze.erp_loc_a101
-    FROM 'D:/sql/sql-data-warehouse-project/datasets/source_erp/loc_a101.csv'
-    DELIMITER ','
-    CSV HEADER;
-
-    end_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time - start_time));
-
-    ----------------------------------------------------------------
-    -- ERP TABLE 3
-    ----------------------------------------------------------------
-
-    start_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE 'TRUNCATE erp_px_cat_g1v2';
-
-    TRUNCATE TABLE bronze.erp_px_cat_g1v2;
-
-    RAISE NOTICE 'INSERTING erp_px_cat_g1v2';
-
-    COPY bronze.erp_px_cat_g1v2
-    FROM 'D:/sql/sql-data-warehouse-project/datasets/source_erp/px_cat_g1v2.csv'
-    DELIMITER ','
-    CSV HEADER;
-
-    end_time := CURRENT_TIMESTAMP;
-
-    RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time - start_time));
-    end_time_batch :=CURRENT_TIMESTAMP;
-	
-    RAISE NOTICE '=========================================';
-    RAISE NOTICE 'BRONZE LAYER LOADING COMPLETED';
-	 RAISE NOTICE '>> Load Duration: % seconds',
-    EXTRACT(EPOCH FROM (end_time_batch - start_time_batch));
-    RAISE NOTICE '=========================================';
-
-EXCEPTION--catch block
-    WHEN OTHERS THEN
-
-        RAISE NOTICE '=========================================';
-        RAISE NOTICE 'ERROR OCCURED DURING LOADING BRONZE LAYER';
-        RAISE NOTICE 'ERROR MESSAGE: %', SQLERRM;
-        RAISE NOTICE 'ERROR CODE: %', SQLSTATE;
-        RAISE NOTICE '=========================================';
-
-END;--end of try block 
-$$;
