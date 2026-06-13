@@ -33,20 +33,6 @@ This project involves:
 - Data Analytics  
 
 ---
-
-## 🛠️ Important Links & Tools:
-
-Everything is for Free!
-- **[Datasets](datasets/):** Access to the project dataset (csv files).
-- **[SQL Server Express](https://www.microsoft.com/en-us/sql-server/sql-server-downloads):** Lightweight server for hosting your SQL database.
-- **[SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16):** GUI for managing and interacting with databases.
-- **[Git Repository](https://github.com/):** Set up a GitHub account and repository to manage, version, and collaborate on your code efficiently.
-- **[DrawIO](https://www.drawio.com/):** Design data architecture, models, flows, and diagrams.
-- **[Notion](https://www.notion.com/templates/sql-data-warehouse-project):** Get the Project Template from Notion
-- **[Notion Project Steps](https://thankful-pangolin-2ca.notion.site/SQL-Data-Warehouse-Project-16ed041640ef80489667cfe2f380b269?pvs=4):** Access to All Project Phases and Tasks.
-
----
-
 ## 🚀 Project Requirements
 
 ### Building the Data Warehouse (Data Engineering)
@@ -108,6 +94,6 @@ data-warehouse-project/
 Let's stay in touch! Feel free to connect with me on the following platforms:
 
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]([https://linkedin.com/in/baraa-khatib-salkini](https://www.linkedin.com/in/soham-sengupta-04380a209/))
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/soham-sengupta-04380a209/)
 ## 🌟 About Me
 Hi there! I'm **SOHAM SENGUPTA**. I’m an Aspiring Data analyst
